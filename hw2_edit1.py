@@ -129,26 +129,61 @@ def successor_tail(v,maze):
 
     return successors 
 
-def MazeSolver_constraintProp(maze):
+def MazeSolver_constraintProp(start,maze):
     v = None
     domain_head = []
     domain_tail = []
+    headScore = None
+    tailScore = None
     flip = None
+    goal = [None,None]
     variables = [(v,domain_head,domain_tail)]
+    scores_head = [(v,headScore)]
+    scores_tail = [(v,tailScore)]
     for row in range(len(maze)):
         for col in range(len(maze)):
-            v =[row,col]
+            v = [row,col]
             # domain needs to be taken from the successors
             domain_head = successor_head(v,maze)
             domain_tail = successor_tail(v,maze)
             variables.append((v,domain_head,domain_tail))
-    return variables
+            if (maze[row][col] == 'F'):
+                goal = [row,col]
+    #parse through the varibles and iassign scores
+    for pointer in variables:
+        domain_head = pointer[1]
+        domain_tail = pointer[2]
+        v = pointer[0]
+        if v != None:
+            if maze[v[0]][v[1]] != 'F':
+                if (len(domain_head) == 0):
+                    headScore = 0
+                if (len(domain_tail) == 0):
+                    tailScore = 0
+                if(len(domain_head) != 0 ):
+                    headScore = 1
+                    if [2,2] in domain_head:
+                        headScore = 2
+                if(len(domain_tail) != 0 ):
+                    tailScore = 1
+                    if goal in domain_tail:
+                        tailScore = 2
+                print(headScore,goal)
+                scores_head.append((v,headScore))
+                scores_tail.append((v,tailScore))
+                
+    print(variables,"\n")
+    print(scores_head,"\n")
+    print(scores_tail,"\n")
+    return variables,scores_tail,scores_tail
+
 
 
 #main function
 def main():
     maze = create()
-    print(MazeSolver_constraintProp(maze))
+    start = [0,0]
+    print(MazeSolver_constraintProp(start,maze))
 
 if __name__ == "__main__":
     main()
