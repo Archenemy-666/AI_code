@@ -155,12 +155,12 @@ def constraintProp(curr,maze,flip):
         if (len(successor(explore[0],explore[1],maze,flip)) > 0):
             score = 1
             #scoreList.append((explore[0],explore[1],flip,score))
-            for temp in successor(explore[0],explore[1],maze,flip):
+            for temp in successor(explore[0],explore[1],maze,explore[2]):
                 if (maze[temp[0]][temp[1]] == 'F'):
                     score = 2
-                    scoreList.append([explore[0],explore[1],flip,score])
+                    scoreList.append([explore[0],explore[1],explore[2],score])
             if (score == 1):
-                scoreList.append([explore[0],explore[1],flip,score])
+                scoreList.append([explore[0],explore[1],explore[2],score])
     #print(scoreList)
     
     from operator import itemgetter
