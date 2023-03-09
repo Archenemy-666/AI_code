@@ -150,23 +150,48 @@ def constraintProp(curr,maze,flip):
     scoreList = []
     x = successor(curr[0],curr[1],maze,flip)
     for explore in successor(curr[0],curr[1],maze,flip):
-        if (len(successor(explore[0],explore[1],maze,flip)) == 0):
-            continue
-        if (len(successor(explore[0],explore[1],maze,flip)) > 0):
+        #print("current : ",curr)
+        #print("explore : ",explore)    
+        #print("length of succ: ",len(successor(explore[0],explore[1],maze,flip)))
+        if  (len(successor(explore[0],explore[1],maze,explore[2])) == 0) and (maze[explore[0]][explore[1]] != 'F'):    
+            if (len(successor(explore[0],explore[1],maze,explore[2])) == 0 ):
+                score = 0
+                continue
+        if (maze[explore[0]][explore[1]] == 'F'):
+            score = 2
+        if  (len(successor(explore[0],explore[1],maze,explore[2])) > 0 ) and (maze[explore[0]][explore[1]] != 'F'):
             score = 1
-            #scoreList.append((explore[0],explore[1],flip,score))
-            for temp in successor(explore[0],explore[1],maze,explore[2]):
-                if (maze[temp[0]][temp[1]] == 'F'):
-                    score = 2
-                    scoreList.append([explore[0],explore[1],explore[2],score])
-            if (score == 1):
-                scoreList.append([explore[0],explore[1],explore[2],score])
-    #print(scoreList)
+        flip = explore[2]
+        scoreList.append([explore[0],explore[1],flip,score])
     
-    from operator import itemgetter
-    scoreList = sorted(scoreList, key=itemgetter(3),reverse=True)
-    print(scoreList)
-    return scoreList        
+    #from operator import itemgetter
+    #scoreList = sorted(scoreList,key=itemgetter(3), reverse = False)     
+    print("actualList : ",x)
+    print("score list : ",scoreList)    
+    return scoreList 
+
+
+#-----------------------------------------------------------------------------------
+        # if (maze[explore[0]][explore[1]] != 'F'):
+       #    if (len(successor(explore[0],explore[1],maze,flip)) == 0):
+       #         score = 0
+       # if (len(successor(explore[0],explore[1],maze,flip)) > 0):
+       #     score = 1
+            #scoreList.append((explore[0],explore[1],flip,score))
+            #for temp in successor(explore[0],explore[1],maze,explore[2]):
+                #if (maze[temp[0]][temp[1]] == 'F'):
+                    #score = 2
+                    #scoreList.append([explore[0],explore[1],explore[2],score])
+            #if (score == 1):
+        #    scoreList.append([curr[0],curr[1],flip,score])
+    #print(scoreList)
+#-----------------------------------------------------------------------------------
+    #from operator import itemgetter
+    #scoreList = sorted(scoreList, key=itemgetter(3),reverse=False)
+    #print("list : ",x)
+    #for i in scoreList :
+    #    print("score list : ",i)
+    #return scoreList        
 
 
 
@@ -178,20 +203,25 @@ def LocalSearch(cr,cc,maze):
     stack = [(start,[start])]
     while stack:
         curr, path = stack.pop()
-        constraintProp(curr,maze,flip)
         if curr in visited:
             continue
         visited.append(curr)
         if (maze[curr[0]][curr[1]] == 'F'):
-            return path,(len(path)-1)
+           return path,(len(path)-1)
         if (len(path) == 1):
-            for next_pos in successor(curr[0],curr[1],maze,flip):
+            #for next_pos in successor(curr[0],curr[1],maze,flip):
+            for next_pos in constraintProp(curr,maze,flip):
                 stack.append((next_pos, path+[next_pos]))
         elif(len(path) > 1):
             flip = curr[2]
+            
             #add constraint function to filter and funnel the ordered list(oreder is critical) 
-            for next_pos in successor(curr[0],curr[1],maze,flip):
+            #for next_pos in successor(curr[0],curr[1],maze,flip):
+            for next_pos in constraintProp(curr,maze,flip):
+                #constraintProp(curr,maze,flip)
                 stack.append((next_pos, path+[next_pos]))
+                #print("stack :",stack)
+                #print("path : ",path)
     return [], None
                 
 
