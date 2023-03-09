@@ -161,11 +161,16 @@ def constraintProp(curr,maze,flip):
             score = 2
         if  (len(successor(explore[0],explore[1],maze,explore[2])) > 0 ) and (maze[explore[0]][explore[1]] != 'F'):
             score = 1
+        
+        for sense in successor(explore[0],explore[1],maze,explore[2]):
+            if (maze[sense[0]][sense[1]] == 'F'):
+                score = 2
+
         flip = explore[2]
         scoreList.append([explore[0],explore[1],flip,score])
     
-    #from operator import itemgetter
-    #scoreList = sorted(scoreList,key=itemgetter(3), reverse = False)     
+    from operator import itemgetter
+    scoreList = sorted(scoreList,key=itemgetter(3), reverse = False)     
     print("actualList : ",x)
     print("score list : ",scoreList)    
     return scoreList 
