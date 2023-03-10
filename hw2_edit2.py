@@ -157,6 +157,7 @@ def LocalSearch(cr,cc,maze):
     start = ([cr,cc,flip,score])
     visited = []
     stack = [(start,[start])]
+    steps = 0
     while stack:
         curr, path = stack.pop()
         if curr in visited:
@@ -167,13 +168,15 @@ def LocalSearch(cr,cc,maze):
         if (len(path) == 1):
             for next_pos in constraintProp(curr,maze,flip):
                 stack.append((next_pos, path+[next_pos]))
+                steps += 1
         elif(len(path) > 1):
             flip = curr[2]
             
             #add constraint function to filter and funnel the ordered list(oreder is critical) 
             for next_pos in constraintProp(curr,maze,flip):
                 stack.append((next_pos, path+[next_pos]))
-    return [], None
+                steps += 1
+    return [], steps
                 
 
 # ---------------------------------------------------------------------------------------------
@@ -183,6 +186,7 @@ def main():
     path , cost = LocalSearch(0,0,maze)
     #print(MazeSolver_constraintProp(start,maze))
     print("this is the path : ",path)
+    print("decisions made : ",cost)
 
 
 
