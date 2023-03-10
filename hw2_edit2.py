@@ -62,7 +62,7 @@ def successor(cr,cc,maze,flip):
                 southwestC = cc - temp
                 if southwestR in range(0,len(maze)) and southwestC in range(0,len(maze)):
                     successors.append([southwestR,southwestC,flip]) 
-#---------------------
+
     if flip == True:
         flip = False 
 
@@ -121,38 +121,13 @@ def successor(cr,cc,maze,flip):
     
     return successors 
 
-#def ConstraintandOrganize(domain,maze):
-    
-#    scoreDomain = [
-#    for var in domain:
-#        row = var[0]
-#        col = var[1]
-#        if maze[row,col]
 
-
-#def MazeSolver_constraintProp(start,maze):
-#    v = None
-#    domain_head = []
-#    domain_tail = []
-#    headScore = None
-#    tailScore = None
-#    flip = None 
-#    goal = [None,None]
-    
-#    for row in range(len(maze)):
-#        for col in range(len(maze)):
-#            v = [row,vol]
-#            domain_head = successors_head(v,maze)
-#            domain_tail = successors_tail(v,maze)
-#    return domain_head,domain_tail
+#create constraints by adding scores and then score 0 nodes are removed, highest score is 2
 def constraintProp(curr,maze,flip):
     score = 0
     scoreList = []
     x = successor(curr[0],curr[1],maze,flip)
     for explore in successor(curr[0],curr[1],maze,flip):
-        #print("current : ",curr)
-        #print("explore : ",explore)    
-        #print("length of succ: ",len(successor(explore[0],explore[1],maze,flip)))
         if  (len(successor(explore[0],explore[1],maze,explore[2])) == 0) and (maze[explore[0]][explore[1]] != 'F'):    
             if (len(successor(explore[0],explore[1],maze,explore[2])) == 0 ):
                 score = 0
@@ -175,31 +150,7 @@ def constraintProp(curr,maze,flip):
     print("score list : ",scoreList)    
     return scoreList 
 
-
-#-----------------------------------------------------------------------------------
-        # if (maze[explore[0]][explore[1]] != 'F'):
-       #    if (len(successor(explore[0],explore[1],maze,flip)) == 0):
-       #         score = 0
-       # if (len(successor(explore[0],explore[1],maze,flip)) > 0):
-       #     score = 1
-            #scoreList.append((explore[0],explore[1],flip,score))
-            #for temp in successor(explore[0],explore[1],maze,explore[2]):
-                #if (maze[temp[0]][temp[1]] == 'F'):
-                    #score = 2
-                    #scoreList.append([explore[0],explore[1],explore[2],score])
-            #if (score == 1):
-        #    scoreList.append([curr[0],curr[1],flip,score])
-    #print(scoreList)
-#-----------------------------------------------------------------------------------
-    #from operator import itemgetter
-    #scoreList = sorted(scoreList, key=itemgetter(3),reverse=False)
-    #print("list : ",x)
-    #for i in scoreList :
-    #    print("score list : ",i)
-    #return scoreList        
-
-
-
+# Using local search to traverse through the tree.
 def LocalSearch(cr,cc,maze):
     flip = False
     score = 0
@@ -214,19 +165,14 @@ def LocalSearch(cr,cc,maze):
         if (maze[curr[0]][curr[1]] == 'F'):
            return path,(len(path)-1)
         if (len(path) == 1):
-            #for next_pos in successor(curr[0],curr[1],maze,flip):
             for next_pos in constraintProp(curr,maze,flip):
                 stack.append((next_pos, path+[next_pos]))
         elif(len(path) > 1):
             flip = curr[2]
             
             #add constraint function to filter and funnel the ordered list(oreder is critical) 
-            #for next_pos in successor(curr[0],curr[1],maze,flip):
             for next_pos in constraintProp(curr,maze,flip):
-                #constraintProp(curr,maze,flip)
                 stack.append((next_pos, path+[next_pos]))
-                #print("stack :",stack)
-                #print("path : ",path)
     return [], None
                 
 
@@ -237,6 +183,9 @@ def main():
     path , cost = LocalSearch(0,0,maze)
     #print(MazeSolver_constraintProp(start,maze))
     print("this is the path : ",path)
+
+
+
 if __name__ == "__main__":
     main()
 
