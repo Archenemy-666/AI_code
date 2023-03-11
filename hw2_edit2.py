@@ -48,7 +48,7 @@ def successor(cr,cc,maze,flip):
                 northwestC = cc - temp
                 if northwestR in range(0,len(maze)) and northwestC in range(0,len(maze)):
                     successors.append([northwestR,northwestC,flip]) 
-
+        
         if (maze[cr][cc] == 'SE'):
             for temp in range(1,len(maze)):
                 southeastR = cr + temp
@@ -62,7 +62,8 @@ def successor(cr,cc,maze,flip):
                 southwestC = cc - temp
                 if southwestR in range(0,len(maze)) and southwestC in range(0,len(maze)):
                     successors.append([southwestR,southwestC,flip]) 
-
+        return successors
+ 
     if flip == True:
         flip = False 
 
@@ -119,7 +120,7 @@ def successor(cr,cc,maze,flip):
                 if northeastR in range (0,len(maze)) and northeastC in range (0,len(maze)):
                     successors.append([northeastR,northeastC,flip])
     
-    return successors 
+        return successors 
 
 
 #create constraints by adding scores and then score 0 nodes are removed, highest score is 2
