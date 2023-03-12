@@ -147,8 +147,8 @@ def constraintProp(curr,maze,flip):
     
     from operator import itemgetter
     scoreList = sorted(scoreList,key=itemgetter(3), reverse = False)     
-    print("actualList : ",x)
-    print("score list : ",scoreList)    
+    #print("actualList : ",x)
+    #print("score list : ",scoreList)    
     return scoreList 
 
 # Using local search to traverse through the tree.
@@ -186,8 +186,16 @@ def main():
     maze = create()
     path , cost = LocalSearch(0,0,maze)
     #print(MazeSolver_constraintProp(start,maze))
-    print("this is the path : ",path)
-    print("decisions made : ",cost)
+    if len(path) != 0:
+        directionList = []
+        for i in path:
+            directionList.append(maze[i[0]][i[1]])
+        print("path : ",path)
+        print("path in direction values : ",directionList)
+        print("cost : ",cost)
+        print("length of path : ",len(path))
+    else: 
+        print("no dfs solution")
 
 
 
