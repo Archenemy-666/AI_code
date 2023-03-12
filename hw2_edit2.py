@@ -165,7 +165,7 @@ def LocalSearch(cr,cc,maze):
             continue
         visited.append(curr)
         if (maze[curr[0]][curr[1]] == 'F'):
-           return path,(len(path)-1)
+           return path,steps
         if (len(path) == 1):
             for next_pos in constraintProp(curr,maze,flip):
                 stack.append((next_pos, path+[next_pos]))
